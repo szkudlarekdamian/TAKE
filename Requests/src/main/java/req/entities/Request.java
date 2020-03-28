@@ -6,7 +6,7 @@
 package req.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,7 +29,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Request.findAll", query = "SELECT r FROM Request r"),
     @NamedQuery(name = "Request.findById", query = "SELECT r FROM Request r WHERE r.id = :id"),
-    @NamedQuery(name = "Request.findByRequestDate", query = "SELECT r FROM Request r WHERE r.requestDate = :requestDate"),
+    @NamedQuery(name = "Request.findByRequestLocalDate", query = "SELECT r FROM Request r WHERE r.requestLocalDate = :requestLocalDate"),
     @NamedQuery(name = "Request.findByRequestText", query = "SELECT r FROM Request r WHERE r.requestText = :requestText")})
 public class Request implements Serializable {
 
@@ -41,8 +40,7 @@ public class Request implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Column(name = "REQUEST_DATE")
-    @Temporal(TemporalType.DATE)
-    private Date requestDate;
+    private LocalDate requestLocalDate;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
@@ -69,12 +67,12 @@ public class Request implements Serializable {
         this.id = id;
     }
 
-    public Date getRequestDate() {
-        return requestDate;
+    public LocalDate getRequestLocalDate() {
+        return requestLocalDate;
     }
 
-    public void setRequestDate(Date requestDate) {
-        this.requestDate = requestDate;
+    public void setRequestLocalDate(LocalDate requestLocalDate) {
+        this.requestLocalDate = requestLocalDate;
     }
 
     public String getRequestText() {
