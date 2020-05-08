@@ -86,13 +86,12 @@ namespace MvcNews.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TimeStamp,Text")] NewsItem newsItem)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TimeStamp,Text,RowVersion")] NewsItem newsItem)
         {
             if (id != newsItem.Id)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -100,7 +99,7 @@ namespace MvcNews.Controllers
                     _context.Update(newsItem);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (!NewsItemExists(newsItem.Id))
                     {
@@ -108,7 +107,11 @@ namespace MvcNews.Controllers
                     }
                     else
                     {
-                        throw;
+                        ModelState.AddModelError(string.Empty, "In the meantime, this news was edited by another user. You can go back or force your changes by saving them again.");
+                        newsItem.RowVersion = (byte[])((NewsItem)ex.Entries.Single().GetDatabaseValues().ToObject()).RowVersion;
+                        ModelState.Remove("RowVersion");
+
+                        return View(newsItem);
                     }
                 }
                 return RedirectToAction(nameof(Index));
