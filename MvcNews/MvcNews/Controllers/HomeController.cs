@@ -25,6 +25,8 @@ namespace MvcNews.Controllers
 
         public IActionResult Privacy()
         {
+            ViewBag.Policy = "Please do not enter any sensitive information.";
+
             return View();
         }
 
