@@ -1,0 +1,6 @@
+view\backing\CalculateBean.class
+view\backing\DTStudents.class
+com\mycompany\JSFPrimeFacesLab\JAXRSConfiguration.class
+com\mycompany\JSFPrimeFacesLab\resources\JavaEE8Resource.class
+view\backing\ChartBean.class
+view\backing\Student.class
