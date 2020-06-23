@@ -60,8 +60,6 @@ namespace MarioPizzeria.Controllers
             }
            
             ViewData["PizzaId"] = new SelectList(_context.Pizzas.Where(x=> x.Id==id), "Id", "Name");
-            foreach (var s in selects)
-                Console.WriteLine(ViewData["PizzaId"] + " has " + s.Name + " ? " + s.IsChecked);
             ViewData["Ingredients"] = selects;
             return View();
         }

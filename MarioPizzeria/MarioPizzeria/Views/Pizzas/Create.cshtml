@@ -11,9 +11,8 @@
        }, "Value", "Text");
 }
 
-<h1>Create</h1>
-
-<h4>Pizza</h4>
+<h1>New pizza</h1>
+<hr/>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -53,7 +52,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Index")'">Back to list</button>
 </div>
 
 @section Scripts {

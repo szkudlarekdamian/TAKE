@@ -9,7 +9,7 @@ namespace MarioPizzeria.Models
     public class PizzaIngredient
     {
         public int Id { get; set; }
-        [DisplayName("Select Pizza")]
+        [DisplayName("Pizza")]
         public int PizzaId { get; set; }
 
         [DisplayName("Select Ingredient")]
