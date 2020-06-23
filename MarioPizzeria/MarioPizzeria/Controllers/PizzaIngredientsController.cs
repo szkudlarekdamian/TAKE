@@ -52,7 +52,17 @@ namespace MarioPizzeria.Controllers
         public IActionResult Create(int id)
         {
             ViewData["IngredientId"] = new SelectList(_context.Ingredients, "Id", "Name");
+            var ingredients = _context.Ingredients.OrderBy(i=>i.Name).ToList();
+            var selects = new List<IngredientCheckbox>();
+            foreach (Ingredient ingredient in ingredients){
+                bool isOnPizza = _context.PizzaIngredients.Where(pi => pi.PizzaId == id && pi.IngredientId == ingredient.Id).Any();
+                selects.Add(new IngredientCheckbox(ingredient.Id, ingredient.Name, isOnPizza));
+            }
+           
             ViewData["PizzaId"] = new SelectList(_context.Pizzas.Where(x=> x.Id==id), "Id", "Name");
+            foreach (var s in selects)
+                Console.WriteLine(ViewData["PizzaId"] + " has " + s.Name + " ? " + s.IsChecked);
+            ViewData["Ingredients"] = selects;
             return View();
         }
 
@@ -61,20 +71,25 @@ namespace MarioPizzeria.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PizzaId,IngredientId")] PizzaIngredient pizzaIngredient)
+        public async Task<IActionResult> Create(int PizzaId, List<int> NewIngredients)
         {
-            var exists = _context.PizzaIngredients.Where(m => m.IngredientId == pizzaIngredient.IngredientId && m.PizzaId == pizzaIngredient.PizzaId);
-            if (exists.Count()>0)
-                ModelState.AddModelError("Already exists", "This ingredient is already on pizza");
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                _context.Add(pizzaIngredient);
+                var oldIngredients = _context.PizzaIngredients.Where(m => m.PizzaId == PizzaId).Select(m => m.IngredientId).ToList();
+                List<int> deleteIngredientsIds = oldIngredients.Except(NewIngredients).ToList();
+                List<PizzaIngredient> toDelete = _context.PizzaIngredients.Where(m => m.PizzaId == PizzaId && deleteIngredientsIds.Contains(m.IngredientId)).ToList();
+                List<int> addIngredientsIds = NewIngredients.Except(oldIngredients).ToList();
+                List<PizzaIngredient> toAdd = new List<PizzaIngredient>();
+                foreach (int i in addIngredientsIds)
+                    toAdd.Add(new PizzaIngredient { PizzaId = PizzaId, IngredientId = i });
+
+                _context.RemoveRange(toDelete);
+                _context.AddRange(toAdd);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index","Pizzas");
             }
-            ViewData["IngredientId"] = new SelectList(_context.Ingredients, "Id", "Name", pizzaIngredient.IngredientId);
-            ViewData["PizzaId"] = new SelectList(_context.Pizzas.Where(x => x.Id == pizzaIngredient.PizzaId), "Id", "Name");
-            return View(pizzaIngredient);
+            ViewData["PizzaId"] = new SelectList(_context.Pizzas.Where(x => x.Id == PizzaId), "Id", "Name");
+            return View();
         }
 
         // GET: PizzaIngredients/Edit/5

@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "Create";
 }
+
+@using MarioPizzeria.Models;
+@{
+    List<IngredientCheckbox> ingredientsOnPizza = ViewData["Ingredients"] as List<IngredientCheckbox>;
+}
 @foreach (var item in ViewContext.ViewData.ModelState)
 {
     if (item.Value.Errors.Any())
@@ -27,14 +32,21 @@
                 <label asp-for="PizzaId" class="control-label"></label>
                 <select asp-for="PizzaId" class="form-control" asp-items="ViewBag.PizzaId" readonly="readonly"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="IngredientId" class="control-label"></label>
-                <select asp-for="IngredientId" class="form-control" asp-items="ViewBag.IngredientId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" />
-            </div>
-        </form>
+            @foreach (IngredientCheckbox ingredient in ingredientsOnPizza)
+            {
+                <div class="form-check" style="margin-bottom:10px">
+                    <input type="checkbox" class="form-check-input" value="@ingredient.IngredientId" id="@ingredient.IngredientId" name="NewIngredients" 
+                           checked=@(ingredient.IsChecked ? true:false) />
+                    <label class="form-check-label" for="@ingredient.IngredientId">
+                        @ingredient.Name
+                    </label>
+                </div>
+            }
+                
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-success" />
+                </div>
+            </form>
     </div>
 </div>
 

@@ -52,7 +52,9 @@
 </div>
 
 <div>
-    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Index")'">Back to list</button>
+    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Create", "PizzaIngredients", new {id=@Model.Id })'">Ingredients</button>
+    
+    <button type="button" style="margin-left:15px" class="btn btn-info" onclick="location.href='@Url.Action("Index")'">Back to list</button>
 </div>
 
 @section Scripts {
