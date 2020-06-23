@@ -1,0 +1,60 @@
+﻿@model MarioPizzeria.Models.Pizza
+
+@{
+    ViewData["Title"] = "Edit";
+    var crustList = new SelectList(
+       new List<SelectListItem>
+       {
+                new SelectListItem {Text = "Thin", Value = "Thin"},
+                new SelectListItem {Text = "Thick", Value = "Thick"},
+       }, "Value", "Text");
+}
+
+<h1>Edit</h1>
+
+<h4>Pizza</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceS" class="control-label"></label>
+                <input asp-for="PriceS" class="form-control" />
+                <span asp-validation-for="PriceS" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceM" class="control-label"></label>
+                <input asp-for="PriceM" class="form-control" />
+                <span asp-validation-for="PriceM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceL" class="control-label"></label>
+                <input asp-for="PriceL" class="form-control" />
+                <span asp-validation-for="PriceL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Crust" class="control-label"></label>
+                @Html.DropDownListFor(m => m.Crust, crustList, "Select crust", new { @class = "form-control" })
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Index")'">Back to list</button>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

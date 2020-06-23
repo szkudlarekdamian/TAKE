@@ -1,0 +1,24 @@
+﻿@model MarioPizzeria.Models.Pizza
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+    <h1>@Model.Name</h1><div>
+    <hr/>
+    <h6><b>@Html.DisplayNameFor(model => model.PriceS)</b>: @Model.PriceS.ToString("c")</h6>
+    <h6><b>@Html.DisplayNameFor(model => model.PriceM)</b>: @Model.PriceM.ToString("c")</h6>
+    <h6><b>@Html.DisplayNameFor(model => model.PriceL)</b>: @Model.PriceL.ToString("c")</h6>
+    <h6><b>@Html.DisplayNameFor(model => model.Crust)</b>: @Model.Crust</h6>
+    <h6><b>Toppings</b></h6>
+    <ul>
+        @foreach (var ingredient in ViewBag.PizzaIngredients)
+        {
+            <li>@ingredient</li>
+        }
+    </ul>
+</div>
+<div>
+    <button type="button" style="width:75px" class="btn btn-info" onclick="location.href='@Url.Action("Edit", new {id=Model.Id })'">Edit</button>
+    <button type="button" style="margin-left:20px" class="btn btn-info" onclick="location.href='@Url.Action("Index")'">Back to list</button>
+</div>

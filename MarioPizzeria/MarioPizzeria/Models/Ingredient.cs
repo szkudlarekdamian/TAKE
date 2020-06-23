@@ -18,6 +18,6 @@ namespace MarioPizzeria.Models
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
-        public virtual ICollection<Pizza> PizzasOn { get; set; }
+        //public virtual ICollection<Pizza> PizzasOn { get; set; }
     }
 }
